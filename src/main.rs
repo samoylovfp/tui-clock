@@ -1,13 +1,9 @@
-use std::{
-    f64::consts::{FRAC_PI_2, PI, TAU},
-    time::Duration,
-};
+use std::{f64::consts::TAU, time::Duration};
 
 use chrono::Timelike;
 use crossterm::event::{self, Event, KeyCode, KeyEvent};
 use ratatui::{
     style::Color,
-    text::Text,
     widgets::canvas::{Canvas, Circle, Line},
     Frame,
 };
