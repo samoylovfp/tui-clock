@@ -57,7 +57,7 @@ fn draw(frame: &mut Frame, aspect_ratio: f64) {
                 radius: r,
                 color: Color::Cyan,
             });
-            let txt_r = r * 0.95;
+            let txt_r = r * 0.90;
 
             ctx.print(0.0, txt_r, "12");
             ctx.print(txt_r, 0.0, "3");
