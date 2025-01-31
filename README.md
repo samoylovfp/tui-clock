@@ -1,9 +1,10 @@
 # Terminal clock
 
-Bottom left in a layout:
-![screenshot](scr.png)
+![image](https://github.com/user-attachments/assets/5b437d77-1dbd-46fb-9937-8ffbc51dff55)
 
-Run as
+## Install
+`cargo install --locked --git https://github.com/samoylovfp/tui-clock`
+## Run
 `clock 0.5`
 
 The argument is the aspect ratio of the font glyph.
@@ -13,6 +14,8 @@ different values to see what looks good for your terminal.
 ## Zellij
 
 The clock looks nice in a zellij layout, e.g.
+
+![screenshot](scr.png)
 
 ```
 layout {
