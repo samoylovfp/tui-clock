@@ -1,11 +1,14 @@
 # Terminal clock
 
+Bottom left in a layout:
 ![screenshot](scr.png)
 
+Run as
 `clock 0.5`
 
-The first argument is the aspect ratio of the font glyph.
-It is probably between 0.4 and 0.6, should be easy to try different values to see what looks circular.
+The argument is the aspect ratio of the font glyph.
+It is probably between 0.4 and 0.6, should be easy to try
+different values to see what looks good for your terminal.
 
 ## Zellij
 
