@@ -75,6 +75,7 @@ fn draw(frame: &mut Frame, aspect_ratio: f64, theme: Theme) {
     let now = chrono::Local::now().time();
     let r: f64 = 1.0;
     let margin = 1.0;
+    let braille_marks = true;
 
     let min_side =
         ((frame.area().width as f64) * aspect_ratio).min(frame.area().height.into()) - margin;
@@ -93,33 +94,39 @@ fn draw(frame: &mut Frame, aspect_ratio: f64, theme: Theme) {
                 color: theme.circle,
             });
             let txt_r = r * 0.90;
-
-            ctx.print(0.0, txt_r, "12");
-            ctx.print(txt_r, 0.0, "3");
-            ctx.print(0.0, -txt_r, "6");
-            ctx.print(-txt_r, 0.0, "9");
+            if braille_marks {
+                ctx.print(0.0, txt_r, "⡇⣝");
+                ctx.print(txt_r, 0.0, "⣽");
+                ctx.print(0.0, -txt_r, "⣯");
+                ctx.print(-txt_r, 0.0, "⣻");
+            } else {
+                ctx.print(0.0, txt_r, "12");
+                ctx.print(txt_r, 0.0, "3");
+                ctx.print(0.0, -txt_r, "6");
+                ctx.print(-txt_r, 0.0, "9");
+            }
             let second_angle =
                 |t: NaiveTime| (t.second() as f64 + t.nanosecond() as f64 / 1e9) / 60.0 * TAU;
             let minute_angle =
                 |t: NaiveTime| t.minute() as f64 / 60.0 * TAU + second_angle(t) / 60.0;
             let hour_angle =
                 |t: NaiveTime| t.hour12().1 as f64 / 12.0 * TAU + minute_angle(t) / 60.0;
-
-            for h in [0, 3, 6, 9] {
-                let angle = hour_angle(NaiveTime::from_hms_opt(h, 0, 0).expect("valid time"));
-                let x = angle.sin();
-                let y = angle.cos();
-                let start = 1.0;
-                let end = 0.8;
-                ctx.draw(&Line {
-                    x1: x * start,
-                    y1: y * start,
-                    x2: x * end,
-                    y2: y * end,
-                    color: theme.marks,
-                });
+            if !braille_marks {
+                for h in [0, 3, 6, 9] {
+                    let angle = hour_angle(NaiveTime::from_hms_opt(h, 0, 0).expect("valid time"));
+                    let x = angle.sin();
+                    let y = angle.cos();
+                    let start = 1.0;
+                    let end = 0.8;
+                    ctx.draw(&Line {
+                        x1: x * start,
+                        y1: y * start,
+                        x2: x * end,
+                        y2: y * end,
+                        color: theme.marks,
+                    });
+                }
             }
-
             for (angle, length, color) in [
                 (second_angle(now), 0.8, theme.second),
                 (minute_angle(now), 0.7, theme.minute),
