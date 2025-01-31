@@ -110,7 +110,7 @@ fn draw(frame: &mut Frame, aspect_ratio: f64, theme: Theme) {
             let minute_angle =
                 |t: NaiveTime| t.minute() as f64 / 60.0 * TAU + second_angle(t) / 60.0;
             let hour_angle =
-                |t: NaiveTime| t.hour12().1 as f64 / 12.0 * TAU + minute_angle(t) / 60.0;
+                |t: NaiveTime| t.hour12().1 as f64 / 12.0 * TAU + minute_angle(t) / 12.0;
             if !braille_marks {
                 for h in [0, 3, 6, 9] {
                     let angle = hour_angle(NaiveTime::from_hms_opt(h, 0, 0).expect("valid time"));
