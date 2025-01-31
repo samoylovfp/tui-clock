@@ -8,16 +8,50 @@ use ratatui::{
     Frame,
 };
 
+#[derive(Clone, Copy)]
+struct Theme {
+    bg: Color,
+    circle: Color,
+    marks: Color,
+    hour: Color,
+    minute: Color,
+    second: Color,
+}
+
 fn main() {
     let aspect_ratio: f64 = std::env::args()
         .nth(1)
         .expect("Pass aspect ratio as the first argument, probably around 0.6")
         .parse()
         .expect("pass a float as the first parameter");
+
+    let theme = std::env::args().nth(2).unwrap_or_default();
+
+    let default_theme = Theme {
+        bg: Color::Reset,
+        circle: Color::Cyan,
+        marks: Color::Gray,
+        hour: Color::LightRed,
+        minute: Color::LightGreen,
+        second: Color::White,
+    };
+    let rose_pine = Theme {
+        bg: Color::Rgb(31, 29, 46),
+        circle: Color::Rgb(49, 116, 143),
+        marks: Color::Rgb(144, 140, 170),
+        hour: Color::Rgb(246, 193, 119),
+        minute: Color::Rgb(235, 188, 186),
+        second: Color::Rgb(156, 207, 216),
+    };
+    let theme = match theme.as_str() {
+        "rose_pine" => rose_pine,
+        _ => default_theme,
+    };
+
     let mut terminal = ratatui::init();
     loop {
         terminal
-            .draw(|f| draw(f, aspect_ratio))
+            .draw(|f| draw(f, aspect_ratio, theme))
             .expect("failed to draw frame");
         if matches!(
             event::poll(Duration::from_millis(10)).expect("failed to read event"),
@@ -37,7 +71,7 @@ fn main() {
     ratatui::restore();
 }
 
-fn draw(frame: &mut Frame, aspect_ratio: f64) {
+fn draw(frame: &mut Frame, aspect_ratio: f64, theme: Theme) {
     let now = chrono::Local::now().time();
     let r: f64 = 1.0;
     let margin = 1.0;
@@ -48,6 +82,7 @@ fn draw(frame: &mut Frame, aspect_ratio: f64) {
     let height = frame.area().height as f64 / min_side;
 
     let clock = Canvas::default()
+        .background_color(theme.bg)
         .x_bounds([-width, width])
         .y_bounds([-height, height])
         .paint(|ctx| {
@@ -55,7 +90,7 @@ fn draw(frame: &mut Frame, aspect_ratio: f64) {
                 x: 0.0,
                 y: 0.0,
                 radius: r,
-                color: Color::Cyan,
+                color: theme.circle,
             });
             let txt_r = r * 0.90;
 
@@ -81,14 +116,14 @@ fn draw(frame: &mut Frame, aspect_ratio: f64) {
                     y1: y * start,
                     x2: x * end,
                     y2: y * end,
-                    color: Color::Gray,
+                    color: theme.marks,
                 });
             }
 
             for (angle, length, color) in [
-                (second_angle(now), 0.8, Color::White),
-                (minute_angle(now), 0.7, Color::LightGreen),
-                (hour_angle(now), 0.6, Color::LightRed),
+                (second_angle(now), 0.8, theme.second),
+                (minute_angle(now), 0.7, theme.minute),
+                (hour_angle(now), 0.6, theme.hour),
             ] {
                 let angle_from_top = angle;
                 let x = angle_from_top.sin();
