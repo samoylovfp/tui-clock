@@ -15,7 +15,8 @@ different values to see what looks good for your terminal.
 
 The clock looks nice in a zellij layout, e.g.
 
-![screenshot](scr.png)
+![image](https://github.com/user-attachments/assets/0ad2649b-ff7d-4229-a433-95c292128cb3)
+
 
 ```
 layout {
@@ -27,7 +28,7 @@ layout {
         }
         pane size="20%" {
             command "clock"
-            args "0.45"
+            args "0.46" "rose_pine"
         }
     }
 }
