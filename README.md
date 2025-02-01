@@ -1,6 +1,6 @@
 # Terminal clock
 
-![image](https://github.com/user-attachments/assets/5b437d77-1dbd-46fb-9937-8ffbc51dff55)
+![image](./scr.webp)
 
 ## Install
 `cargo install --locked --git https://github.com/samoylovfp/tui-clock`
